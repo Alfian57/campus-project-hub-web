@@ -9,6 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArticleApiResponse } from "@/types/api";
+import { getAssetUrl } from "@/lib/env";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
 
@@ -100,7 +101,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
         {/* Background Image */}
         <div className="relative h-[300px] md:h-[400px] w-full">
           <Image
-            src={article.thumbnailUrl}
+            src={getAssetUrl(article.thumbnailUrl)}
             alt={article.title}
             fill
             className="object-cover"
@@ -140,7 +141,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
                 <div className="flex items-center gap-2">
                   <Avatar className="w-8 h-8 border border-zinc-700">
                     <AvatarImage
-                      src={article.author.avatarUrl}
+                      src={getAssetUrl(article.author.avatarUrl)}
                       alt={article.author.name}
                     />
                     <AvatarFallback className="bg-zinc-800 text-zinc-400 text-xs">
@@ -219,7 +220,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
                 <div className="flex flex-col items-center text-center">
                   <Avatar className="w-16 h-16 border-2 border-zinc-700 mb-3">
                     <AvatarImage
-                      src={article.author.avatarUrl}
+                      src={getAssetUrl(article.author.avatarUrl)}
                       alt={article.author.name}
                     />
                     <AvatarFallback className="bg-zinc-800 text-zinc-400">
@@ -255,7 +256,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
                         <div className="flex gap-3">
                           <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden">
                             <Image
-                              src={related.thumbnailUrl}
+                              src={getAssetUrl(related.thumbnailUrl)}
                               alt={related.title}
                               fill
                               className="object-cover"

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
+import { getAssetUrl } from "@/lib/env";
 
 interface ImageCarouselProps {
   images: string[];
@@ -28,7 +29,7 @@ export function ImageCarousel({ images, alt }: ImageCarouselProps) {
     return (
       <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-zinc-800 border border-zinc-700">
         <Image
-          src={images[0]}
+          src={getAssetUrl(images[0])}
           alt={alt}
           fill
           className="object-cover"
@@ -56,7 +57,7 @@ export function ImageCarousel({ images, alt }: ImageCarouselProps) {
       {/* Main Image Container */}
       <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-zinc-800 border border-zinc-700">
         <Image
-          src={images[currentIndex]}
+          src={getAssetUrl(images[currentIndex])}
           alt={`${alt} - Gambar ${currentIndex + 1}`}
           fill
           className="object-cover transition-opacity duration-300"
@@ -121,7 +122,7 @@ export function ImageCarousel({ images, alt }: ImageCarouselProps) {
               )}
             >
               <Image
-                src={image}
+                src={getAssetUrl(image)}
                 alt={`${alt} thumbnail ${index + 1}`}
                 fill
                 className="object-cover"

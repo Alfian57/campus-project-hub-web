@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import * as LucideIcons from "lucide-react";
 import { toast } from "sonner";
 
-import { getApiUrl } from "@/lib/env";
+import { getApiUrl, getAssetUrl } from "@/lib/env";
 
 const API_BASE_URL = getApiUrl();
 
@@ -372,7 +372,7 @@ export default function EditProjectPage() {
                 {thumbnailPreview ? (
                   <div className="relative w-48 h-32 rounded-lg overflow-hidden border border-zinc-700">
                     <img
-                      src={thumbnailPreview}
+                      src={getAssetUrl(thumbnailPreview)}
                       alt="Thumbnail preview"
                       className="w-full h-full object-cover"
                     />
@@ -410,7 +410,7 @@ export default function EditProjectPage() {
                 {imagePreviews.map((preview, index) => (
                   <div key={index} className="relative w-24 h-24 rounded-lg overflow-hidden border border-zinc-700">
                     <img
-                      src={preview}
+                      src={getAssetUrl(preview)}
                       alt={`Image ${index + 1}`}
                       className="w-full h-full object-cover"
                     />

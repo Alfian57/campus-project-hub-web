@@ -13,7 +13,7 @@ import * as LucideIcons from "lucide-react";
 import { toast } from "sonner";
 import { articlesService } from "@/lib/services/articles";
 
-import { getApiUrl } from "@/lib/env";
+import { getApiUrl, getAssetUrl } from "@/lib/env";
 
 const API_BASE_URL = getApiUrl();
 
@@ -310,7 +310,7 @@ export default function EditArticlePage() {
                 {thumbnailPreview ? (
                   <div className="relative w-full h-10 flex items-center gap-2 px-3 bg-zinc-800/50 border border-zinc-700 rounded-lg">
                     <img
-                      src={thumbnailPreview}
+                      src={getAssetUrl(thumbnailPreview)}
                       alt="Thumbnail"
                       className="w-8 h-8 rounded object-cover"
                     />
@@ -392,7 +392,7 @@ export default function EditArticlePage() {
             </h3>
             <div className="relative aspect-video max-w-md rounded-lg overflow-hidden bg-zinc-800">
               <img
-                src={thumbnailPreview}
+                src={getAssetUrl(thumbnailPreview)}
                 alt="Preview"
                 className="w-full h-full object-cover"
               />

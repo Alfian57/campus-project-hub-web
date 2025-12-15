@@ -9,6 +9,7 @@ import { Project } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { toggleLike } from "@/actions/social";
 import { toast } from "sonner";
+import { getAssetUrl } from "@/lib/env";
 
 interface ProjectCardProps {
   project: Project;
@@ -62,7 +63,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               className="h-full w-full"
             >
               <Image
-                src={project.thumbnailUrl}
+                src={getAssetUrl(project.thumbnailUrl)}
                 alt={project.title}
                 fill
                 className="object-cover"

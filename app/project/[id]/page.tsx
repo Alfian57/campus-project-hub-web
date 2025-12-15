@@ -7,6 +7,7 @@ import { ProjectActionCard } from "@/components/project-action-card";
 import { Eye, Heart, ArrowLeft, Crown } from "lucide-react";
 import Link from "next/link";
 import { ProjectApiResponse, CommentApiResponse } from "@/types/api";
+import { getAssetUrl } from "@/lib/env";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
 
@@ -123,7 +124,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               <div className="flex items-center gap-3 mb-6">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden bg-zinc-800">
                   <Image
-                    src={project.author.avatarUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${project.author.name}`}
+                    src={getAssetUrl(project.author.avatarUrl) || `https://api.dicebear.com/7.x/avataaars/svg?seed=${project.author.name}`}
                     alt={project.author.name}
                     fill
                     className="object-cover"

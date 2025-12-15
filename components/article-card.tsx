@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, Calendar } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { getAssetUrl } from "@/lib/env";
 
 interface ArticleCardProps {
   article: Article;
@@ -25,7 +26,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
         {/* Thumbnail */}
         <div className="relative aspect-[16/9] overflow-hidden">
           <Image
-            src={article.thumbnailUrl}
+            src={getAssetUrl(article.thumbnailUrl)}
             alt={article.title}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
