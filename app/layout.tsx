@@ -45,7 +45,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               window.__ENV__ = {
-                NEXT_PUBLIC_API_URL: "${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1"}",
+                NEXT_PUBLIC_API_URL: "${process.env["NEXT_PUBLIC_API_URL"] || "http://localhost:8000/api/v1"}",
               };
             `,
           }}
