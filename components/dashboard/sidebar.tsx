@@ -98,14 +98,19 @@ export function Sidebar({ role = "user" }: SidebarProps) {
       iconName: "LayoutDashboard",
     },
     {
-      href: "/dashboard/moderator/queue",
-      label: "Antrian Review",
-      iconName: "Flag",
+      href: "/dashboard/moderator/users",
+      label: "Pengguna",
+      iconName: "Users",
     },
     {
       href: "/dashboard/moderator/projects",
       label: "Proyek",
       iconName: "FolderKanban",
+    },
+    {
+      href: "/dashboard/moderator/articles",
+      label: "Artikel",
+      iconName: "FileText",
     },
   ];
 
