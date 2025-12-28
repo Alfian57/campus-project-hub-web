@@ -1,37 +1,25 @@
 import { Sparkles, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Footer } from "@/components/footer";
+import { LandingHeader } from "@/components/landing/landing-header";
+import { Badge } from "@/components/ui/badge";
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-zinc-950">
       {/* Header */}
-      <header className="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/20">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-zinc-50">Campus Hub</h1>
-              </div>
-            </Link>
-
-            {/* Back Button */}
-            <Link href="/" className="flex items-center gap-2 text-zinc-400 hover:text-zinc-100 transition-colors">
-              <ArrowLeft className="w-4 h-4" />
-              Kembali
-            </Link>
-          </div>
-        </div>
-      </header>
+      {/* Header */}
+      <LandingHeader />
 
       {/* Content */}
-      <main className="container mx-auto px-4 py-16 max-w-4xl">
-        <h1 className="text-4xl font-bold text-zinc-50 mb-8">Kebijakan Privasi</h1>
-        <p className="text-zinc-400 mb-8">Terakhir diperbarui: 13 Desember 2024</p>
+      <main className="container mx-auto px-4 py-20 max-w-4xl">
+        <div className="mb-12">
+            <Badge variant="outline" className="mb-4 px-4 py-1.5 text-sm border-blue-500/30 bg-blue-500/10 text-blue-400">
+                Legal
+            </Badge>
+            <h1 className="text-4xl font-bold text-zinc-50 mb-6">Kebijakan Privasi</h1>
+            <p className="text-zinc-400">Terakhir diperbarui: 13 Desember 2024</p>
+        </div>
 
         <div className="prose prose-invert prose-zinc max-w-none space-y-8">
           {/* Introduction */}

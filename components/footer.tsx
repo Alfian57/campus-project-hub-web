@@ -1,7 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { Sparkles, Github, Twitter, Linkedin, Mail } from "lucide-react";
+import { useConfiguration } from "@/components/providers/configuration-provider";
 
 export function Footer() {
+  const { get } = useConfiguration();
+
   return (
     <footer className="bg-zinc-900 dark:bg-black border-t border-zinc-800">
       <div className="container mx-auto px-4 py-12">
@@ -22,7 +27,7 @@ export function Footer() {
             {/* Social Links */}
             <div className="flex items-center gap-3">
               <a
-                href="https://github.com"
+                href={get("site.github", "https://github.com")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center transition-colors"
@@ -30,7 +35,7 @@ export function Footer() {
                 <Github className="w-4 h-4 text-zinc-400" />
               </a>
               <a
-                href="https://twitter.com"
+                href={get("site.twitter", "https://twitter.com")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center transition-colors"
@@ -38,7 +43,7 @@ export function Footer() {
                 <Twitter className="w-4 h-4 text-zinc-400" />
               </a>
               <a
-                href="https://linkedin.com"
+                href={get("site.linkedin", "https://linkedin.com")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center transition-colors"
@@ -48,29 +53,24 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Product */}
+          {/* Navigation */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Produk</h3>
+            <h3 className="text-white font-semibold mb-4">Navigasi</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/" className="text-zinc-400 hover:text-blue-400 transition-colors text-sm">
-                  Jelajahi Proyek
+                  Beranda
                 </Link>
               </li>
               <li>
-                <Link href="/register" className="text-zinc-400 hover:text-lime-400 transition-colors text-sm">
-                  Unggah Proyek
+                <Link href="/projects" className="text-zinc-400 hover:text-blue-400 transition-colors text-sm">
+                  Proyek
                 </Link>
               </li>
               <li>
-                <a href="#features" className="text-zinc-400 hover:text-lime-400 transition-colors text-sm">
-                  Fitur
-                </a>
-              </li>
-              <li>
-                <a href="#how-it-works" className="text-zinc-400 hover:text-lime-400 transition-colors text-sm">
-                  Cara Kerja
-                </a>
+                <Link href="/articles" className="text-zinc-400 hover:text-blue-400 transition-colors text-sm">
+                  Artikel
+                </Link>
               </li>
             </ul>
           </div>
@@ -90,13 +90,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-zinc-400 hover:text-lime-400 transition-colors text-sm">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="/careers" className="text-zinc-400 hover:text-lime-400 transition-colors text-sm">
-                  Karier
+                <Link href="/register" className="text-zinc-400 hover:text-lime-400 transition-colors text-sm">
+                  Daftar
                 </Link>
               </li>
             </ul>
@@ -134,15 +129,15 @@ export function Footer() {
         <div className="pt-8 border-t border-zinc-800">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-zinc-400">
-              © 2025 Campus Project Hub. Dibangun dengan Next.js 14 & Midtrans.
+              © 2025 Campus Project Hub.
             </p>
             <div className="flex items-center gap-6">
               <a
-                href="mailto:support@campushub.com"
+                href={`mailto:${get("site.email", "support@campushub.com")}`}
                 className="text-sm text-zinc-400 hover:text-lime-400 transition-colors flex items-center gap-2"
               >
                 <Mail className="w-4 h-4" />
-                support@campushub.com
+                {get("site.email", "support@campushub.com")}
               </a>
             </div>
           </div>

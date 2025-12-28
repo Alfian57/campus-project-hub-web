@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/toaster";
 import Script from "next/script";
 import { AuthProvider } from "@/components/providers/AuthContext";
 
+import { ConfigurationProvider } from "@/components/providers/configuration-provider";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -54,9 +56,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <ConfigurationProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </ConfigurationProvider>
         <Toaster />
       </body>
     </html>

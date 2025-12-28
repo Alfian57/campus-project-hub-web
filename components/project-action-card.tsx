@@ -1,10 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PurchaseModal } from "@/components/purchase-modal";
 import { useAuth } from "@/components/providers/AuthContext";
-import { Github, Globe, Lock, Crown, Check } from "lucide-react";
+import { Github, Globe, Lock, Crown, Check, Heart } from "lucide-react";
+import { toast } from "sonner";
+import { api } from "@/lib/api";
+import { cn } from "@/lib/cn";
 
 interface ProjectActionCardProps {
   projectId: string;
@@ -16,6 +20,8 @@ interface ProjectActionCardProps {
     github: string;
     demo: string;
   };
+  initialLikes: number;
+  initialIsLiked: boolean;
 }
 
 export function ProjectActionCard({
@@ -25,11 +31,53 @@ export function ProjectActionCard({
   price,
   authorId,
   links,
+  initialLikes,
+  initialIsLiked,
 }: ProjectActionCardProps) {
   const { user, isAuthenticated } = useAuth();
+  const [likes, setLikes] = useState(initialLikes);
+  const [isLiked, setIsLiked] = useState(initialIsLiked);
+  const [isLiking, setIsLiking] = useState(false);
   
   const isOwner = isAuthenticated && user?.id === authorId;
   const canAccessSourceCode = projectType === "free" || isOwner;
+
+  const handleLike = async () => {
+    if (!isAuthenticated) {
+      toast.error("Silakan login untuk menyukai proyek ini");
+      return;
+    }
+
+    if (isLiking) return;
+    setIsLiking(true);
+
+    // Optimistic update
+    const previousLikes = likes;
+    const previousIsLiked = isLiked;
+    
+    setLikes(prev => isLiked ? prev - 1 : prev + 1);
+    setIsLiked(prev => !prev);
+
+    try {
+      const response = await api.post<{ liked: boolean; likes: number }>(`/projects/${projectId}/like`);
+      if (response.success && response.data) {
+        setLikes(response.data.likes);
+        setIsLiked(response.data.liked);
+      } else {
+        // Revert
+        setLikes(previousLikes);
+        setIsLiked(previousIsLiked);
+        toast.error("Gagal memproses like");
+      }
+    } catch (error) {
+       // Revert
+       setLikes(previousLikes);
+       setIsLiked(previousIsLiked);
+       toast.error("Terjadi kesalahan saat like");
+    } finally {
+      setIsLiking(false);
+    }
+  };
 
   return (
     <Card className="bg-zinc-900 border-zinc-800">
@@ -38,30 +86,57 @@ export function ProjectActionCard({
           Tautan Proyek
         </h3>
         
-        {/* Demo Button - Always Available */}
-        <a
-          href={links.demo}
-          target="_blank"
-          rel="noopener noreferrer"
+        {/* Like Button */}
+        <Button 
+          className={cn(
+            "w-full transition-all border", 
+            isLiked 
+              ? "bg-red-500/10 border-red-500/50 text-red-500 hover:bg-red-500/20 hover:text-red-400" 
+              : "bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700 hover:text-zinc-50 hover:border-zinc-600"
+          )}
+          size="lg"
+          variant="ghost"
+          onClick={handleLike}
+          disabled={isLiking}
         >
-          <Button className="w-full bg-blue-600 hover:bg-blue-700" size="lg" variant="default">
-            <Globe className="w-4 h-4 mr-2" />
-            Lihat Demo
-          </Button>
-        </a>
+          <Heart className={cn("w-4 h-4 mr-2", isLiked && "fill-current")} />
+          {likes > 0 ? `${likes} Suka` : "Suka Proyek"}
+        </Button>
+
+        {/* Demo Button - Always Available but requires Auth */}
+        <Button 
+          className="w-full bg-blue-600 hover:bg-blue-700" 
+          size="lg" 
+          variant="default"
+          onClick={() => {
+            if (!isAuthenticated) {
+              toast.error("Silakan login untuk melihat demo");
+              return;
+            }
+            window.open(links.demo, "_blank", "noopener,noreferrer");
+          }}
+        >
+          <Globe className="w-4 h-4 mr-2" />
+          Lihat Demo
+        </Button>
         
         {/* Source Code Button - Conditional */}
         {canAccessSourceCode ? (
-          <a
-            href={links.github}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Button 
+            className="w-full border-zinc-700 text-zinc-300 hover:bg-zinc-800 mt-3" 
+            size="lg" 
+            variant="outline"
+            onClick={() => {
+              if (!isAuthenticated) {
+                toast.error("Silakan login untuk melihat kode sumber");
+                return;
+              }
+              window.open(links.github, "_blank", "noopener,noreferrer");
+            }}
           >
-            <Button className="w-full border-zinc-700 text-zinc-300 hover:bg-zinc-800 mt-3" size="lg" variant="outline">
-              <Github className="w-4 h-4 mr-2" />
-              Lihat Kode Sumber
-            </Button>
-          </a>
+            <Github className="w-4 h-4 mr-2" />
+            Lihat Kode Sumber
+          </Button>
         ) : (
           <div className="mt-3 space-y-3">
             {/* Locked Source Code Notice */}
@@ -76,19 +151,35 @@ export function ProjectActionCard({
             </div>
             
             {/* Purchase Button */}
-            <PurchaseModal
-              projectId={projectId}
-              projectTitle={projectTitle}
-              price={price}
-            >
-              <Button 
-                className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold" 
-                size="lg"
+            {isAuthenticated ? (
+              <PurchaseModal
+                projectId={projectId}
+                projectTitle={projectTitle}
+                price={price}
               >
-                <Crown className="w-4 h-4 mr-2" />
-                Beli - Rp {price.toLocaleString("id-ID")}
-              </Button>
-            </PurchaseModal>
+                <Button 
+                  className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold" 
+                  size="lg"
+                >
+                  <Crown className="w-4 h-4 mr-2" />
+                  Beli - Rp {price.toLocaleString("id-ID")}
+                </Button>
+              </PurchaseModal>
+            ) : (
+              <div className="space-y-3">
+                <Button 
+                  className="w-full bg-zinc-800 text-zinc-500 border border-zinc-700 cursor-not-allowed hover:bg-zinc-800" 
+                  size="lg"
+                  disabled
+                >
+                  <Crown className="w-4 h-4 mr-2" />
+                  Beli - Rp {price.toLocaleString("id-ID")}
+                </Button>
+                <p className="text-xs text-center text-zinc-500">
+                  Anda harus <a href="/login" className="text-blue-500 hover:text-blue-400 hover:underline">masuk</a> untuk membeli proyek ini
+                </p>
+              </div>
+            )}
           </div>
         )}
 

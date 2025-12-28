@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { CommentSection } from "@/components/comment-section";
 import { ImageCarousel } from "@/components/image-carousel";
 import { ProjectActionCard } from "@/components/project-action-card";
+import { ProjectStats } from "@/components/project-stats";
 import { Eye, Heart, ArrowLeft, Crown } from "lucide-react";
 import Link from "next/link";
 import { ProjectApiResponse, CommentApiResponse } from "@/types/api";
@@ -84,11 +85,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <header className="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">
           <Link
-            href="/"
+            href="/projects"
             className="inline-flex items-center gap-2 text-zinc-400 hover:text-zinc-100 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Kembali ke Proyek
+            Kembali ke Daftar Proyek
           </Link>
         </div>
       </header>
@@ -142,16 +143,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               </div>
 
               {/* Stats */}
-              <div className="flex items-center gap-6 text-sm text-zinc-400">
-                <div className="flex items-center gap-1.5">
-                  <Eye className="w-4 h-4" />
-                  <span>{project.stats.views} dilihat</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Heart className="w-4 h-4" />
-                  <span>{project.stats.likes} suka</span>
-                </div>
-              </div>
+              <ProjectStats 
+                projectId={project.id}
+                views={project.stats.views}
+                likes={project.stats.likes}
+                isLiked={project.stats.isLiked}
+              />
             </div>
 
             {/* Project Images Carousel */}
@@ -167,9 +164,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               </h3>
               <div className="flex flex-wrap gap-2">
                 {(project.techStack || []).map((tech) => (
-                  <Badge key={tech} variant="secondary" className="text-sm px-4 py-2 bg-zinc-800 text-zinc-300 border border-zinc-700">
-                    {tech}
-                  </Badge>
+                  <Link key={tech} href={`/projects?techStack=${encodeURIComponent(tech)}`}>
+                    <Badge variant="secondary" className="text-sm px-4 py-2 bg-zinc-800 text-zinc-300 border border-zinc-700 hover:bg-blue-500/10 hover:text-blue-400 hover:border-blue-500/50 transition-all cursor-pointer">
+                      {tech}
+                    </Badge>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -191,6 +190,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   github: project.links.github,
                   demo: project.links.demo,
                 }}
+                initialLikes={project.stats.likes}
+                initialIsLiked={project.stats.isLiked}
               />
             </div>
           </div>

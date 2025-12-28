@@ -7,9 +7,10 @@ import { useAuth } from "@/components/providers/AuthContext";
 
 interface LandingHeaderProps {
   showArticlesActive?: boolean;
+  activePage?: "home" | "projects" | "articles" | "about" | "contact";
 }
 
-export function LandingHeader({ showArticlesActive = false }: LandingHeaderProps) {
+export function LandingHeader({ showArticlesActive = false, activePage }: LandingHeaderProps) {
   const { isAuthenticated, isLoading } = useAuth();
 
   return (
@@ -29,30 +30,44 @@ export function LandingHeader({ showArticlesActive = false }: LandingHeaderProps
           {/* Navigation */}
           <div className="hidden md:flex items-center gap-6">
             <Link
-              href="/#features"
-              className="text-sm font-medium text-zinc-400 hover:text-zinc-100 transition-colors"
+              href="/"
+              className={`text-sm font-medium transition-colors ${
+                activePage === "home" ? "text-zinc-100" : "text-zinc-400 hover:text-zinc-100"
+              }`}
             >
-              Fitur
-            </Link>
-            <Link
-              href="/#how-it-works"
-              className="text-sm font-medium text-zinc-400 hover:text-zinc-100 transition-colors"
-            >
-              Cara Kerja
+              Beranda
             </Link>
             <Link
               href="/projects"
-              className="text-sm font-medium text-zinc-400 hover:text-zinc-100 transition-colors"
+              className={`text-sm font-medium transition-colors ${
+                activePage === "projects" ? "text-zinc-100" : "text-zinc-400 hover:text-zinc-100"
+              }`}
             >
               Proyek
             </Link>
             <Link
               href="/articles"
               className={`text-sm font-medium transition-colors ${
-                showArticlesActive ? "text-zinc-100" : "text-zinc-400 hover:text-zinc-100"
+                activePage === "articles" || showArticlesActive ? "text-zinc-100" : "text-zinc-400 hover:text-zinc-100"
               }`}
             >
               Artikel
+            </Link>
+            <Link
+              href="/about"
+              className={`text-sm font-medium transition-colors ${
+                activePage === "about" ? "text-zinc-100" : "text-zinc-400 hover:text-zinc-100"
+              }`}
+            >
+              Tentang Kami
+            </Link>
+            <Link
+              href="/contact"
+              className={`text-sm font-medium transition-colors ${
+                activePage === "contact" ? "text-zinc-100" : "text-zinc-400 hover:text-zinc-100"
+              }`}
+            >
+              Kontak
             </Link>
           </div>
 

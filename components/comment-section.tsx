@@ -6,8 +6,10 @@ import Image from "next/image";
 import { Comment } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { addComment } from "@/actions/social";
 import { toast } from "sonner";
+import { useAuth } from "@/components/providers/AuthContext";
+import { api } from "@/lib/api";
+import { CommentApiResponse } from "@/types/api";
 
 interface CommentSectionProps {
   projectId: string;
@@ -21,9 +23,15 @@ export function CommentSection({
   const [comments, setComments] = useState<Comment[]>(initialComments);
   const [newComment, setNewComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user, isAuthenticated } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isAuthenticated || !user) {
+      toast.error("Silakan login untuk berkomentar");
+      return;
+    }
 
     if (!newComment.trim()) {
       toast.error("Silakan masukkan komentar");
@@ -32,36 +40,34 @@ export function CommentSection({
 
     setIsSubmitting(true);
 
-    // Optimistic update
-    const tempComment: Comment = {
-      id: `temp-${Date.now()}`,
-      content: newComment,
-      createdAt: new Date(),
-      user: {
-        id: "guest",
-        name: "Pengguna Tamu",
-        avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Guest",
-      },
-    };
-
-    setComments([tempComment, ...comments]);
-    setNewComment("");
-
-    // Server update
     try {
-      const result = await addComment(projectId, newComment);
-      if (result.success) {
+      const response = await api.post<CommentApiResponse>(`/projects/${projectId}/comments`, { 
+        content: newComment 
+      });
+
+      if (response.success && response.data) {
+        const addedComment: Comment = {
+          id: response.data.id,
+          content: response.data.content,
+          createdAt: new Date(response.data.createdAt),
+          user: {
+            id: response.data.user.id,
+            name: response.data.user.name,
+            avatarUrl: response.data.user.avatarUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${response.data.user.name}`,
+            university: response.data.user.university || undefined,
+            major: response.data.user.major || undefined,
+          },
+        };
+
+        setComments([addedComment, ...comments]);
+        setNewComment("");
         toast.success("Komentar ditambahkan!");
       } else {
-        // Revert on error
-        setComments(comments);
-        setNewComment(newComment);
-        toast.error("Gagal menambahkan komentar");
+        toast.error(response.message || "Gagal menambahkan komentar");
       }
     } catch (error) {
-      setComments(comments);
-      setNewComment(newComment);
-      toast.error("Terjadi kesalahan");
+      console.error("Error posting comment:", error);
+      toast.error("Terjadi kesalahan saat mengirim komentar");
     } finally {
       setIsSubmitting(false);
     }
@@ -94,26 +100,49 @@ export function CommentSection({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Add Comment Form */}
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <textarea
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Bagikan pemikiranmu atau ajukan pertanyaan..."
-            className="w-full min-h-[100px] px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-950 dark:focus:ring-zinc-300 resize-none"
-            disabled={isSubmitting}
-          />
-          <div className="flex justify-end">
-            <Button
-              type="submit"
-              disabled={isSubmitting || !newComment.trim()}
-              className="bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-50 dark:hover:bg-zinc-200"
-            >
-              <Send className="w-4 h-4 mr-2" />
-              {isSubmitting ? "Mengirim..." : "Kirim Komentar"}
-            </Button>
+        {/* Add Comment Form or Login Prompt */}
+        {isAuthenticated ? (
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Bagikan pemikiranmu atau ajukan pertanyaan..."
+              className="w-full min-h-[100px] px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-950 dark:focus:ring-zinc-300 resize-none"
+              disabled={isSubmitting}
+            />
+            <div className="flex justify-end">
+              <Button
+                type="submit"
+                disabled={isSubmitting || !newComment.trim()}
+                className="bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-50 dark:hover:bg-zinc-200"
+              >
+                <Send className="w-4 h-4 mr-2" />
+                {isSubmitting ? "Mengirim..." : "Kirim Komentar"}
+              </Button>
+            </div>
+          </form>
+        ) : (
+          <div className="p-6 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center">
+            <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">
+              Masuk untuk Bergabung dalam Diskusi
+            </h3>
+            <p className="text-zinc-500 dark:text-zinc-400 mb-4">
+              Berikan komentar, ajukan pertanyaan, dan berinteraksi dengan komunitas.
+            </p>
+            <div className="flex justify-center gap-3">
+               <a href="/login">
+                <Button variant="default">
+                  Masuk Akun
+                </Button>
+               </a>
+               <a href="/register">
+                <Button variant="outline">
+                  Daftar
+                </Button>
+               </a>
+            </div>
           </div>
-        </form>
+        )}
 
         {/* Comments List */}
         <div className="space-y-4">

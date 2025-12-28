@@ -9,6 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArticleApiResponse } from "@/types/api";
+import { ShareButton } from "@/components/share-button";
 import { getAssetUrl } from "@/lib/env";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
@@ -122,7 +123,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
                   className="text-zinc-300 hover:text-white hover:bg-zinc-800/50 mb-4"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Kembali ke Artikel
+                  Kembali ke Daftar Artikel
                 </Button>
               </Link>
 
@@ -194,19 +195,12 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
                 </article>
 
                 {/* Share */}
-                <div className="mt-12 pt-8 border-t border-zinc-800">
-                  <div className="flex items-center justify-between">
-                    <span className="text-zinc-400">Bagikan artikel ini</span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-zinc-700 text-zinc-300 hover:bg-zinc-800"
-                    >
-                      <Share2 className="w-4 h-4 mr-2" />
-                      Bagikan
-                    </Button>
+                  <div className="mt-12 pt-8 border-t border-zinc-800">
+                    <div className="flex items-center justify-between">
+                      <span className="text-zinc-400">Bagikan artikel ini</span>
+                      <ShareButton title={article.title} text={article.excerpt} />
+                    </div>
                   </div>
-                </div>
               </Card>
             </div>
 

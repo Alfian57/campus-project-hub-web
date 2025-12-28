@@ -9,6 +9,7 @@ export interface GetProjectsParams {
   category?: string;
   status?: string;
   userId?: string;
+  techStack?: string;
 }
 
 export interface CreateProjectInput {
@@ -39,6 +40,7 @@ export const projectsService = {
       category: params.category,
       status: params.status,
       userId: params.userId,
+      techStack: params.techStack,
     });
     
     const response = await api.get<PaginatedData<ProjectApiResponse>>(`/projects${queryString}`);

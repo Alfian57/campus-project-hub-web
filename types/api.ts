@@ -75,6 +75,7 @@ export interface ProjectApiResponse {
     views: number;
     likes: number;
     commentCount: number;
+    isLiked: boolean;
   };
   type: "free" | "paid";
   price: number;
