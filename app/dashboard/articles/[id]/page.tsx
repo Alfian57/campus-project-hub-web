@@ -155,25 +155,26 @@ export default function ArticleDetailPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-4">
           <Link href="/dashboard/articles">
             <Button variant="ghost" size="icon" className="shrink-0">
               <ArrowLeft className="w-5 h-5" />
             </Button>
           </Link>
-          <div>
-            <h1 className="text-3xl font-bold text-zinc-50 line-clamp-1">{article.title}</h1>
-            <p className="text-zinc-400 mt-1">Detail dan pengelolaan artikel</p>
+          <div className="min-w-0">
+            <h1 className="text-xl md:text-3xl font-bold text-zinc-50 line-clamp-1">{article.title}</h1>
+            <p className="text-sm md:text-base text-zinc-400 mt-1">Detail dan pengelolaan artikel</p>
           </div>
         </div>
         
         {/* Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2">
           {/* Status Toggle Button - only show for non-blocked articles */}
           {article.status !== "blocked" && (
             <Button
               variant="outline"
+              size="sm"
               className={`gap-2 ${article.status === "published" ? "text-yellow-500 hover:text-yellow-400 border-yellow-500/30" : "text-green-500 hover:text-green-400 border-green-500/30"}`}
               onClick={handleToggleStatus}
               disabled={isTogglingStatus}
@@ -185,20 +186,21 @@ export default function ArticleDetailPage() {
               ) : (
                 <Send className="w-4 h-4" />
               )}
-              {article.status === "published" ? "Jadikan Draft" : "Publikasikan"}
+              <span className="hidden sm:inline">{article.status === "published" ? "Jadikan Draft" : "Publikasikan"}</span>
             </Button>
           )}
           
           {article.status !== "blocked" && (
             <Link href={`/dashboard/articles/${article.id}/edit`}>
-              <Button variant="outline" className="gap-2">
+              <Button variant="outline" size="sm" className="gap-2">
                 <Edit className="w-4 h-4" />
-                Edit
+                <span className="hidden sm:inline">Edit</span>
               </Button>
             </Link>
           )}
           <Button
             variant="outline"
+            size="sm"
             className="gap-2 text-red-500 hover:text-red-400 hover:bg-red-500/10 border-red-500/30"
             onClick={() => setShowDeleteModal(true)}
             disabled={isDeleting || article.status === "blocked"}
@@ -208,7 +210,7 @@ export default function ArticleDetailPage() {
             ) : (
               <Trash2 className="w-4 h-4" />
             )}
-            Hapus
+            <span className="hidden sm:inline">Hapus</span>
           </Button>
         </div>
       </div>

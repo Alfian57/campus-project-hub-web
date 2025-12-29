@@ -11,6 +11,8 @@ import { ConfirmLogoutModal } from "@/components/dashboard/confirm-logout-modal"
 
 interface SidebarProps {
   role?: "user" | "admin" | "moderator";
+  onClose?: () => void;
+  isMobile?: boolean;
 }
 
 interface NavLink {
@@ -19,12 +21,19 @@ interface NavLink {
   iconName: string;
 }
 
-export function Sidebar({ role = "user" }: SidebarProps) {
+export function Sidebar({ role = "user", onClose, isMobile = false }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
+  const handleNavClick = () => {
+    if (isMobile && onClose) {
+      onClose();
+    }
+  };
+
 
   // =========================================
   // MENU MAHASISWA (User/Student Dashboard)
@@ -147,9 +156,9 @@ export function Sidebar({ role = "user" }: SidebarProps) {
         animate={{ opacity: 1, y: 0 }}
         className="mb-6"
       >
-        <Link href="/">
-          <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-800 hover:shadow-md transition-all duration-300 group">
-            <div className="flex items-center gap-3">
+        <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-800">
+          <div className="flex items-center justify-between">
+            <Link href="/" onClick={handleNavClick} className="flex items-center gap-3 group">
               <div className="w-11 h-11 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
                 <LogoIcon className="w-6 h-6 text-white" />
               </div>
@@ -161,9 +170,19 @@ export function Sidebar({ role = "user" }: SidebarProps) {
                   {rolePanelLabel[role]}
                 </p>
               </div>
-            </div>
+            </Link>
+            {/* Mobile Close Button */}
+            {isMobile && onClose && (
+              <button
+                onClick={onClose}
+                className="lg:hidden p-2 rounded-lg text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                aria-label="Tutup menu"
+              >
+                <LucideIcons.X className="w-5 h-5" />
+              </button>
+            )}
           </div>
-        </Link>
+        </div>
       </motion.div>
 
       {/* Navigation - Floating Card */}
@@ -183,6 +202,7 @@ export function Sidebar({ role = "user" }: SidebarProps) {
                 >
                   <Link
                     href={link.href}
+                    onClick={handleNavClick}
                     className={cn(
                       "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group relative overflow-hidden",
                       isActive
@@ -262,7 +282,7 @@ export function Sidebar({ role = "user" }: SidebarProps) {
               className="overflow-hidden"
             >
               <div className="pt-3 mt-3 border-t border-zinc-100 dark:border-zinc-800 space-y-1">
-                <Link href="/dashboard/profile">
+                <Link href="/dashboard/profile" onClick={handleNavClick}>
                   <button className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm transition-colors cursor-pointer">
                     <LucideIcons.User className="w-4 h-4" />
                     <span>Profil Saya</span>

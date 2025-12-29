@@ -81,19 +81,19 @@ export default function ProfilePage() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-zinc-50">Profil Saya</h1>
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="text-2xl md:text-3xl font-bold text-zinc-50">Profil Saya</h1>
+        <div className="flex items-center gap-2 sm:gap-3">
           <Link href="/dashboard/profile/password">
-            <Button variant="outline" className="gap-2">
+            <Button variant="outline" size="sm" className="gap-2">
               <LucideIcons.Lock className="w-4 h-4" />
-              Ubah Password
+              <span className="hidden sm:inline">Ubah Password</span>
             </Button>
           </Link>
           <Link href="/dashboard/profile/edit">
-            <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
+            <Button size="sm" className="gap-2 bg-blue-600 hover:bg-blue-700">
               <LucideIcons.Pencil className="w-4 h-4" />
-              Edit Profil
+              <span className="hidden sm:inline">Edit Profil</span>
             </Button>
           </Link>
         </div>

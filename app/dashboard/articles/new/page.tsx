@@ -242,7 +242,7 @@ export default function NewArticlePage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="category">Kategori <span className="text-red-500">*</span></Label>
                 <select

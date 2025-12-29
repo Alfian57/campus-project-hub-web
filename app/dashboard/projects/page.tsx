@@ -158,19 +158,19 @@ export default function MyProjectsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
+          <h1 className="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-zinc-50">
             Proyek Saya
           </h1>
-          <p className="text-zinc-600 dark:text-zinc-400 mt-1">
+          <p className="text-sm md:text-base text-zinc-600 dark:text-zinc-400 mt-1">
             Kelola semua proyek Anda
           </p>
         </div>
         <Link href="/dashboard/projects/new">
-          <Button className="bg-blue-600 hover:bg-blue-700 gap-2">
+          <Button className="bg-blue-600 hover:bg-blue-700 gap-2 w-full sm:w-auto">
             <Plus className="w-4 h-4" />
-            Unggah Proyek Baru
+            <span className="sm:inline">Unggah Proyek Baru</span>
           </Button>
         </Link>
       </div>
@@ -272,7 +272,8 @@ export default function MyProjectsPage() {
       {/* Projects Table */}
       {projects.length > 0 ? (
         <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-          <Table>
+          <div className="overflow-x-auto">
+            <Table className="min-w-[800px]">
             <TableHeader>
               <TableRow>
                 <TableHead 
@@ -362,6 +363,7 @@ export default function MyProjectsPage() {
               ))}
             </TableBody>
           </Table>
+          </div>
         </div>
       ) : !isLoading ? (
         <div className="text-center py-12 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

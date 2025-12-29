@@ -117,7 +117,7 @@ export default function ModeratorArticleDetailPage() {
     <RoleGuard allowedRoles={["moderator", "admin"]}>
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-4">
             <Link href="/dashboard/moderator/articles">
               <Button variant="ghost" size="icon">
@@ -125,22 +125,23 @@ export default function ModeratorArticleDetailPage() {
               </Button>
             </Link>
             <div>
-              <h1 className="text-2xl font-bold text-zinc-50">Detail Artikel</h1>
-              <p className="text-zinc-400">Moderasi konten artikel</p>
+              <h1 className="text-xl md:text-2xl font-bold text-zinc-50">Detail Artikel</h1>
+              <p className="text-sm md:text-base text-zinc-400">Moderasi konten artikel</p>
             </div>
           </div>
           
           {/* Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
             <Link href={`/articles/${article.id}`} target="_blank">
-              <Button variant="outline" className="gap-2">
+              <Button variant="outline" size="sm" className="gap-2">
                 <ExternalLink className="w-4 h-4" />
-                Lihat Publik
+                <span className="hidden sm:inline">Lihat Publik</span>
               </Button>
             </Link>
             
             {article.status === "blocked" ? (
               <Button
+                size="sm"
                 className="gap-2 bg-green-600 hover:bg-green-700"
                 onClick={handleUnblock}
                 disabled={isUnblocking}
@@ -150,16 +151,17 @@ export default function ModeratorArticleDetailPage() {
                 ) : (
                   <Unlock className="w-4 h-4" />
                 )}
-                Buka Blokir
+                <span className="hidden sm:inline">Buka Blokir</span>
               </Button>
             ) : (
               <Button
+                size="sm"
                 className="gap-2 bg-red-600 hover:bg-red-700"
                 onClick={() => setShowBlockModal(true)}
                 disabled={isBlocking}
               >
                 <Lock className="w-4 h-4" />
-                Blokir Artikel
+                <span className="hidden sm:inline">Blokir Artikel</span>
               </Button>
             )}
           </div>

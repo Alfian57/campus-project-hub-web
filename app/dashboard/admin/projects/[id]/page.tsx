@@ -108,7 +108,7 @@ export default function AdminProjectDetailPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-4">
           <Link href="/dashboard/admin/projects">
             <Button variant="outline" size="icon">
@@ -116,45 +116,49 @@ export default function AdminProjectDetailPage() {
             </Button>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+            <h1 className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-zinc-50">
               Detail Proyek
             </h1>
-            <p className="text-zinc-600 dark:text-zinc-400">
+            <p className="text-sm md:text-base text-zinc-600 dark:text-zinc-400">
               Kelola dan moderasi proyek ini
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Link href={`/project/${project.id}`} target="_blank">
-            <Button variant="outline">
-              <ExternalLink className="w-4 h-4 mr-2" />
-              Lihat di Landing Page
+            <Button variant="outline" size="sm" className="text-xs md:text-sm">
+              <ExternalLink className="w-4 h-4 md:mr-2" />
+              <span className="hidden md:inline">Lihat di Landing Page</span>
             </Button>
           </Link>
           {project.status === "blocked" ? (
             <Button
               onClick={handleUnblock}
-              className="bg-green-600 hover:bg-green-700"
+              size="sm"
+              className="bg-green-600 hover:bg-green-700 text-xs md:text-sm"
             >
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Buka Blokir
+              <CheckCircle className="w-4 h-4 md:mr-2" />
+              <span className="hidden md:inline">Buka Blokir</span>
             </Button>
           ) : (
             <Button
               variant="destructive"
+              size="sm"
               onClick={() => setIsBlockModalOpen(true)}
+              className="text-xs md:text-sm"
             >
-              <Ban className="w-4 h-4 mr-2" />
-              Blokir
+              <Ban className="w-4 h-4 md:mr-2" />
+              <span className="hidden md:inline">Blokir</span>
             </Button>
           )}
           <Button
             variant="outline"
-            className="text-red-600 hover:text-red-700"
+            size="sm"
+            className="text-red-600 hover:text-red-700 text-xs md:text-sm"
             onClick={() => setIsDeleteModalOpen(true)}
           >
-            <Trash2 className="w-4 h-4 mr-2" />
-            Hapus
+            <Trash2 className="w-4 h-4 md:mr-2" />
+            <span className="hidden md:inline">Hapus</span>
           </Button>
         </div>
       </div>

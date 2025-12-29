@@ -196,117 +196,119 @@ export default function AdminArticlesPage() {
       </div>
 
       <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead 
-                className="cursor-pointer group select-none"
-                onClick={() => handleSort("title")}
-              >
-                Artikel {getSortIcon("title")}
-              </TableHead>
-              <TableHead 
-                className="cursor-pointer group select-none"
-                onClick={() => handleSort("author")}
-              >
-                Penulis {getSortIcon("author")}
-              </TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Views</TableHead>
-              <TableHead 
-                 className="cursor-pointer group select-none"
-                 onClick={() => handleSort("created_at")}
-              >
-                Dipublikasikan {getSortIcon("created_at")}
-              </TableHead>
-              <TableHead className="text-right">Aksi</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {articles.map((article) => (
-              <TableRow key={article.id}>
-                <TableCell>
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={article.thumbnailUrl || "/placeholder-article.jpg"}
-                      alt={article.title}
-                      className="w-16 h-12 rounded-lg object-cover"
-                    />
-                    <div>
-                      <div className="font-medium text-zinc-900 dark:text-zinc-50">
-                        {article.title}
-                      </div>
-                      <div className="text-sm text-zinc-500">
-                        {(article.content || "").slice(0, 40)}...
+        <div className="overflow-x-auto">
+          <Table className="min-w-[800px]">
+            <TableHeader>
+              <TableRow>
+                <TableHead 
+                  className="cursor-pointer group select-none"
+                  onClick={() => handleSort("title")}
+                >
+                  Artikel {getSortIcon("title")}
+                </TableHead>
+                <TableHead 
+                  className="cursor-pointer group select-none"
+                  onClick={() => handleSort("author")}
+                >
+                  Penulis {getSortIcon("author")}
+                </TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Views</TableHead>
+                <TableHead 
+                   className="cursor-pointer group select-none"
+                   onClick={() => handleSort("created_at")}
+                >
+                  Dipublikasikan {getSortIcon("created_at")}
+                </TableHead>
+                <TableHead className="text-right">Aksi</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {articles.map((article) => (
+                <TableRow key={article.id}>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={article.thumbnailUrl || "/placeholder-article.jpg"}
+                        alt={article.title}
+                        className="w-16 h-12 rounded-lg object-cover"
+                      />
+                      <div>
+                        <div className="font-medium text-zinc-900 dark:text-zinc-50">
+                          {article.title}
+                        </div>
+                        <div className="text-sm text-zinc-500">
+                          {(article.content || "").slice(0, 40)}...
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <img
-                      src={article.author.avatarUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${article.author.name}`}
-                      alt={article.author.name}
-                      className="w-6 h-6 rounded-full"
-                    />
-                    <span className="text-sm">{article.author.name}</span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <ContentStatusBadge status={article.status} />
-                </TableCell>
-                <TableCell>
-                   <div className="flex items-center gap-1 text-zinc-500">
-                      <Eye className="w-3 h-3" />
-                      <span className="text-sm">{article.viewCount}</span>
-                   </div>
-                </TableCell>
-                <TableCell className="text-sm text-zinc-500">
-                  {formatDate(article.createdAt)}
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center justify-end gap-2">
-                    <Link href={`/dashboard/admin/articles/${article.id}`}>
-                      <Button size="sm" variant="ghost" className="hover:text-blue-600">
-                        <Eye className="w-4 h-4" />
-                      </Button>
-                    </Link>
-                    {article.status !== "blocked" ? (
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={article.author.avatarUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${article.author.name}`}
+                        alt={article.author.name}
+                        className="w-6 h-6 rounded-full"
+                      />
+                      <span className="text-sm">{article.author.name}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <ContentStatusBadge status={article.status} />
+                  </TableCell>
+                  <TableCell>
+                     <div className="flex items-center gap-1 text-zinc-500">
+                        <Eye className="w-3 h-3" />
+                        <span className="text-sm">{article.viewCount}</span>
+                     </div>
+                  </TableCell>
+                  <TableCell className="text-sm text-zinc-500">
+                    {formatDate(article.createdAt)}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center justify-end gap-2">
+                      <Link href={`/dashboard/admin/articles/${article.id}`}>
+                        <Button size="sm" variant="ghost" className="hover:text-blue-600">
+                          <Eye className="w-4 h-4" />
+                        </Button>
+                      </Link>
+                      {article.status !== "blocked" ? (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => {
+                            setArticleToBlock(article);
+                            setIsBlockModalOpen(true);
+                          }}
+                          className="hover:text-red-600"
+                        >
+                          <Ban className="w-4 h-4" />
+                        </Button>
+                      ) : (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleUnblockArticle(article.id)}
+                          className="hover:text-green-600"
+                        >
+                          <CheckCircle className="w-4 h-4" />
+                        </Button>
+                      )}
                       <Button
                         size="sm"
                         variant="ghost"
-                        onClick={() => {
-                          setArticleToBlock(article);
-                          setIsBlockModalOpen(true);
-                        }}
+                        onClick={() => openDeleteModal(article)}
                         className="hover:text-red-600"
                       >
-                        <Ban className="w-4 h-4" />
+                        <Trash2 className="w-4 h-4" />
                       </Button>
-                    ) : (
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => handleUnblockArticle(article.id)}
-                        className="hover:text-green-600"
-                      >
-                        <CheckCircle className="w-4 h-4" />
-                      </Button>
-                    )}
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => openDeleteModal(article)}
-                      className="hover:text-red-600"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
 
        {articles.length === 0 && !isLoading && (

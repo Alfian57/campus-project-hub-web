@@ -67,29 +67,31 @@ export function DataTable<T>({
   return (
     <>
       <div className="rounded-xl border border-zinc-800 overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow className="hover:bg-transparent border-zinc-800">
-              {columns.map((col) => (
-                <TableHead 
-                  key={col.key} 
-                  className={col.headerClassName || "text-zinc-400"}
-                >
-                  {col.header}
-                </TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((item) => (
-              <TableRow key={keyExtractor(item)} className="border-zinc-800">
+        <div className="overflow-x-auto">
+          <Table className="min-w-[600px]">
+            <TableHeader>
+              <TableRow className="hover:bg-transparent border-zinc-800">
                 {columns.map((col) => (
-                  <TableCell key={col.key}>{col.render(item)}</TableCell>
+                  <TableHead 
+                    key={col.key} 
+                    className={col.headerClassName || "text-zinc-400"}
+                  >
+                    {col.header}
+                  </TableHead>
                 ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {data.map((item) => (
+                <TableRow key={keyExtractor(item)} className="border-zinc-800">
+                  {columns.map((col) => (
+                    <TableCell key={col.key}>{col.render(item)}</TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
 
       {currentPage !== undefined && 

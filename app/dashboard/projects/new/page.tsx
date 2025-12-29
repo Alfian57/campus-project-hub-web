@@ -280,7 +280,7 @@ export default function NewProjectPage() {
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="categoryId">Kategori</Label>
                 <select
@@ -412,7 +412,7 @@ export default function NewProjectPage() {
             Tautan
           </h3>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="githubUrl">GitHub Repository</Label>
               <Input
@@ -452,7 +452,7 @@ export default function NewProjectPage() {
             Harga
           </h3>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="type">Tipe Proyek</Label>
               <select

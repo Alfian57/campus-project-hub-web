@@ -131,29 +131,30 @@ export default function ProjectDetailPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-4">
           <Link href="/dashboard/projects">
             <Button variant="ghost" size="icon" className="shrink-0">
               <ArrowLeft className="w-5 h-5" />
             </Button>
           </Link>
-          <div>
-            <h1 className="text-3xl font-bold text-zinc-50">{project.title}</h1>
-            <p className="text-zinc-400 mt-1">Detail dan pengelolaan proyek</p>
+          <div className="min-w-0">
+            <h1 className="text-xl md:text-3xl font-bold text-zinc-50 truncate">{project.title}</h1>
+            <p className="text-sm md:text-base text-zinc-400 mt-1">Detail dan pengelolaan proyek</p>
           </div>
         </div>
         
         {/* Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Link href={`/dashboard/projects/${project.id}/edit`}>
-            <Button variant="outline" className="gap-2">
+            <Button variant="outline" size="sm" className="gap-2">
               <Edit className="w-4 h-4" />
-              Edit
+              <span className="hidden sm:inline">Edit</span>
             </Button>
           </Link>
           <Button
             variant="outline"
+            size="sm"
             className="gap-2 text-red-500 hover:text-red-400 hover:bg-red-500/10 border-red-500/30"
             onClick={() => setShowDeleteModal(true)}
             disabled={isDeleting}
@@ -163,7 +164,7 @@ export default function ProjectDetailPage() {
             ) : (
               <Trash2 className="w-4 h-4" />
             )}
-            Hapus
+            <span className="hidden sm:inline">Hapus</span>
           </Button>
         </div>
       </div>
