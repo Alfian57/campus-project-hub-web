@@ -1,38 +1,57 @@
-<!-- CI/CD: 2025-12-13 23:09 WIB -->
+# Campus Project Hub - Web
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Official Frontend untuk platform Campus Project Hub. Dibangun menggunakan Next.js 15, TypeScript, Tailwind CSS, dan Shadcn UI. Platform ini berfungsi sebagai tempat mahasiswa memamerkan karya, berbagi artikel, dan berkolaborasi.
 
-## Getting Started
+## 🛠️ Tech Stack
 
-First, run the development server:
+- **Framework:** Next.js 15 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **UI Components:** Shadcn UI
+- **Icons:** Lucide React
+- **Runtime:** Bun
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Fitur Utama
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Showcase Proyek:** Galeri proyek mahasiswa dengan filter kategori dan teknologi.
+- **Article & Blog:** Platform berbagi pengetahuan dan tips seputar dunia IT dan karir.
+- **Gamification:** Sistem level dan EXP untuk menghargai kontribusi user.
+- **Role Based Access:** Dashboard khusus untuk User, Moderator, dan Admin.
+- **SEO Optimized:** Metadata dinamis, Open Graph, dan Sitemap otomatis.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚙️ Cara Menjalankan Project
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Prerequisites**
+   Pastikan Anda sudah menginstall [Bun](https://bun.sh/) di sistem Anda.
 
-## Learn More
+2. **Setup Environment Variables**
+   Copy file `.env.local.example` ke `.env.local` (jika ada) atau buat file `.env.local` baru:
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+   NEXT_PUBLIC_SITE_URL=http://localhost:3000
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+3. **Install Dependencies**
+   ```bash
+   bun install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. **Jalankan Development Server**
+   ```bash
+   bun run dev
+   ```
+   Akses aplikasi di [http://localhost:3000](http://localhost:3000)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📁 Struktur Project
 
-## Deploy on Vercel
+- `/app` - Halaman dan routing Next.js (App Router)
+- `/components` - Komponen UI reusable (atom, molecule, organism)
+- `/lib` - Utility function, hooks, dan konfigurasi
+- `/types` - Definisi tipe TypeScript global
+- `/public` - Aset statis (gambar, font, dll)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔐 Login
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Untuk login, gunakan kredensial yang tersedia di README backend (setelah menjalankan seeder).
+- **Admin:** `admin@campus-hub.com` / `password123`
+- **User:** `gading@uty.ac.id` / `password123`
