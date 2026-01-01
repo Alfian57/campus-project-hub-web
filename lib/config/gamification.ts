@@ -10,9 +10,13 @@ export const ACTION_POINTS = {
   BUY_PROJECT: 50,          // User buys a project (buyer gets this)
   RECEIVE_LIKE: 10,         // User's project receives a like
   RECEIVE_COMMENT: 5,       // User's project receives a comment
-  PROJECT_VIEWED: 1,        // User's project is viewed (capped per day)
+  PROJECT_VIEWED: 1,        // User's project is viewed
   CREATE_ARTICLE: 75,       // User creates a new article
-  ARTICLE_VIEWED: 1,        // User's article is viewed (capped per day)
+  ARTICLE_VIEWED: 1,        // User's article is viewed
+  
+  // EXP for users performing actions
+  GIVE_LIKE: 5,             // User gives a like to a project
+  GIVE_COMMENT: 3,          // User gives a comment to a project
 } as const;
 
 // Level configuration
@@ -50,12 +54,14 @@ export function getLevelProgress(totalExp: number): number {
   const currentLevel = getLevelFromExp(totalExp);
   if (currentLevel >= LEVEL_CONFIG.MAX_LEVEL) return 100;
   
-  const currentLevelExp = getRequiredExpForLevel(currentLevel);
+  // Level 1 starts from 0 EXP, not from BASE_EXP
+  const currentLevelExp = currentLevel === 1 ? 0 : getRequiredExpForLevel(currentLevel);
   const nextLevelExp = getRequiredExpForLevel(currentLevel + 1);
   const expInCurrentLevel = totalExp - currentLevelExp;
   const expNeeded = nextLevelExp - currentLevelExp;
   
-  return Math.round((expInCurrentLevel / expNeeded) * 100);
+  if (expNeeded <= 0) return 100;
+  return Math.max(0, Math.min(100, Math.round((expInCurrentLevel / expNeeded) * 100)));
 }
 
 /**
@@ -66,7 +72,7 @@ export function getExpToNextLevel(totalExp: number): number {
   if (currentLevel >= LEVEL_CONFIG.MAX_LEVEL) return 0;
   
   const nextLevelExp = getRequiredExpForLevel(currentLevel + 1);
-  return nextLevelExp - totalExp;
+  return Math.max(0, nextLevelExp - totalExp);
 }
 
 // Level titles/badges based on level thresholds

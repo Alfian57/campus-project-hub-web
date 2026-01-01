@@ -4,12 +4,11 @@ import { cn } from "@/lib/cn";
 import { 
   getLevelFromExp, 
   getLevelProgress, 
-  getRequiredExpForLevel,
   getExpToNextLevel,
-  getLevelColor
+  getLevelColor,
+  LEVEL_CONFIG
 } from "@/lib/config/gamification";
 import { motion } from "framer-motion";
-import * as LucideIcons from "lucide-react";
 
 interface ExpProgressProps {
   totalExp: number;
@@ -25,20 +24,29 @@ export function ExpProgress({
   const level = getLevelFromExp(totalExp);
   const progress = getLevelProgress(totalExp);
   const expToNext = getExpToNextLevel(totalExp);
-  const currentLevelExp = getRequiredExpForLevel(level);
-  const nextLevelExp = getRequiredExpForLevel(level + 1);
   const colors = getLevelColor(level);
 
+  // Calculate EXP range for current level
+  const currentLevelMinExp = level === 1 ? 0 : LEVEL_CONFIG.BASE_EXP * Math.pow(level, 2);
+  const nextLevelExp = LEVEL_CONFIG.BASE_EXP * Math.pow(level + 1, 2);
+
   return (
-    <div className={cn("space-y-2", className)}>
+    <div className={cn("space-y-3", className)}>
       {showDetails && (
-        <div className="flex items-center justify-between text-sm">
-          <span className={cn("font-medium", colors.text)}>
-            {totalExp.toLocaleString()} EXP
-          </span>
-          <span className="text-zinc-500">
-            {expToNext.toLocaleString()} EXP ke Level {level + 1}
-          </span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className={cn("text-lg font-bold", colors.text)}>
+              Level {level}
+            </span>
+            <span className="text-sm text-zinc-400">
+              • {totalExp.toLocaleString()} EXP
+            </span>
+          </div>
+          {level < LEVEL_CONFIG.MAX_LEVEL && (
+            <span className="text-sm text-zinc-500">
+              Butuh <span className="text-zinc-300 font-medium">{expToNext.toLocaleString()}</span> EXP lagi
+            </span>
+          )}
         </div>
       )}
       
@@ -61,13 +69,14 @@ export function ExpProgress({
         />
       </div>
 
-      {showDetails && (
+      {showDetails && level < LEVEL_CONFIG.MAX_LEVEL && (
         <div className="flex items-center justify-between text-xs text-zinc-500">
-          <span>Level {level}</span>
-          <span>{progress}%</span>
-          <span>Level {level + 1}</span>
+          <span>{currentLevelMinExp.toLocaleString()} EXP</span>
+          <span className="text-zinc-400 font-medium">{progress}% ke Level {level + 1}</span>
+          <span>{nextLevelExp.toLocaleString()} EXP</span>
         </div>
       )}
     </div>
   );
 }
+

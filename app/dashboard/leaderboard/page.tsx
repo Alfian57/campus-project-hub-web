@@ -272,11 +272,13 @@ export default function LeaderboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
             { icon: "FolderPlus", label: "Buat proyek baru", exp: "+100 EXP" },
+            { icon: "FileText", label: "Buat artikel baru", exp: "+75 EXP" },
             { icon: "ShoppingCart", label: "Jual proyek", exp: "+150 EXP" },
             { icon: "ShoppingBag", label: "Beli proyek", exp: "+50 EXP" },
-            { icon: "Heart", label: "Proyek disukai", exp: "+10 EXP" },
-            { icon: "MessageSquare", label: "Proyek dikomentari", exp: "+5 EXP" },
-            { icon: "Eye", label: "Proyek dilihat", exp: "+1 EXP" },
+            { icon: "Heart", label: "Proyek kamu disukai", exp: "+10 EXP" },
+            { icon: "HeartHandshake", label: "Suka proyek orang lain", exp: "+5 EXP" },
+            { icon: "MessageSquare", label: "Proyek kamu dikomentari", exp: "+5 EXP" },
+            { icon: "MessageCircle", label: "Komentari proyek orang lain", exp: "+3 EXP" },
           ].map((item) => {
             const Icon = LucideIcons[item.icon as keyof typeof LucideIcons] as LucideIcons.LucideIcon;
             return (

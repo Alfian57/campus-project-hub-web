@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { useAuth } from "@/components/providers/AuthContext";
 import { Loader2, Menu } from "lucide-react";
@@ -13,18 +13,45 @@ export default function DashboardLayout({
 }) {
   const { user, isLoading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !user) {
       router.push("/login");
+      return;
     }
-  }, [user, isLoading, router]);
+
+    // Auto-redirect based on role
+    if (!isLoading && user) {
+      const isAdminPath = pathname?.startsWith("/dashboard/admin");
+      const isModeratorPath = pathname?.startsWith("/dashboard/moderator");
+      const isProfilePath = pathname?.startsWith("/dashboard/profile");
+      const isSettingsPath = pathname?.startsWith("/dashboard/settings");
+
+      // Profile and settings are accessible by all roles
+      if (isProfilePath || isSettingsPath) {
+        return;
+      }
+
+      // Admin accessing user pages -> redirect to admin dashboard
+      if (user.role === "admin" && !isAdminPath && !isModeratorPath) {
+        router.replace("/dashboard/admin");
+        return;
+      }
+
+      // Moderator accessing user pages -> redirect to moderator dashboard
+      if (user.role === "moderator" && !isModeratorPath) {
+        router.replace("/dashboard/moderator");
+        return;
+      }
+    }
+  }, [user, isLoading, router, pathname]);
 
   // Close sidebar when route changes on mobile
   useEffect(() => {
     setIsSidebarOpen(false);
-  }, []);
+  }, [pathname]);
 
   if (isLoading) {
     return (
@@ -89,4 +116,3 @@ export default function DashboardLayout({
     </div>
   );
 }
-

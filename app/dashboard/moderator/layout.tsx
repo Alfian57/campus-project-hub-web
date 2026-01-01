@@ -8,7 +8,7 @@ export default function ModeratorLayout({
   children: React.ReactNode;
 }) {
   return (
-    <RoleGuard allowedRoles={["moderator"]}>
+    <RoleGuard allowedRoles={["admin", "moderator"]}>
       {children}
     </RoleGuard>
   );
