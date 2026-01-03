@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Sparkles, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/providers/AuthContext";
@@ -39,8 +40,14 @@ export function LandingHeader({ showArticlesActive = false, activePage }: Landin
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/20">
-                <Sparkles className="w-6 h-6 text-white" />
+              <div className="relative w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-md shadow-blue-500/20 overflow-hidden">
+                <Image
+                  src="/logo.png"
+                  alt="Campus Project Hub Logo"
+                  width={36}
+                  height={36}
+                  className="object-contain"
+                />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-zinc-50">Campus Hub</h1>

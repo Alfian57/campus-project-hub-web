@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/cn";
 import * as LucideIcons from "lucide-react";
@@ -159,8 +160,14 @@ export function Sidebar({ role = "user", onClose, isMobile = false }: SidebarPro
         <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-800">
           <div className="flex items-center justify-between">
             <Link href="/" onClick={handleNavClick} className="flex items-center gap-3 group">
-              <div className="w-11 h-11 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-                <LogoIcon className="w-6 h-6 text-white" />
+              <div className="relative w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-md group-hover:scale-105 transition-transform overflow-hidden">
+                <Image
+                  src="/logo.png"
+                  alt="Campus Project Hub Logo"
+                  width={40}
+                  height={40}
+                  className="object-contain"
+                />
               </div>
               <div>
                 <h1 className="text-base font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">

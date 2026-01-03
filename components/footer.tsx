@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Sparkles, Github, Twitter, Linkedin, Mail } from "lucide-react";
+import Image from "next/image";
+import { Github, Twitter, Linkedin, Mail } from "lucide-react";
 import { useConfiguration } from "@/components/providers/configuration-provider";
 
 export function Footer() {
@@ -14,8 +15,14 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-1">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-black" />
+              <div className="relative w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden">
+                <Image
+                  src="/logo.png"
+                  alt="Campus Project Hub Logo"
+                  width={36}
+                  height={36}
+                  className="object-contain"
+                />
               </div>
               <span className="text-xl font-bold text-white">
                 Campus Hub

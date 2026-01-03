@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export function CTASection() {
@@ -28,9 +29,15 @@ export function CTASection() {
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, type: "spring" }}
-            className="inline-flex items-center justify-center w-20 h-20 bg-black rounded-2xl mb-8"
+            className="inline-flex items-center justify-center w-24 h-24 bg-white rounded-3xl mb-8 p-2 shadow-xl"
           >
-            <Sparkles className="w-10 h-10 text-blue-100" />
+            <Image
+              src="/logo.png"
+              alt="Campus Project Hub Logo"
+              width={80}
+              height={80}
+              className="object-contain"
+            />
           </motion.div>
 
           {/* Heading */}

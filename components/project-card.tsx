@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Github, Globe, Heart, MessageCircle, Check, Crown } from "lucide-react";
+import { Github, Globe, Heart, MessageCircle, Check, Crown, Image as ImageIcon } from "lucide-react";
 import { Project } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { getAssetUrl } from "@/lib/env";
@@ -40,14 +40,20 @@ export function ProjectCard({ project, href }: ProjectCardProps) {
             transition={{ duration: 0.3 }}
             className="h-full w-full"
           >
-            <Image
-              src={getAssetUrl(project.thumbnailUrl)}
-              alt={project.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              unoptimized
-            />
+            {getAssetUrl(project.thumbnailUrl) ? (
+              <Image
+                src={getAssetUrl(project.thumbnailUrl)}
+                alt={project.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                unoptimized
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-zinc-800 text-zinc-700">
+                <ImageIcon className="h-12 w-12" />
+              </div>
+            )}
           </motion.div>
 
           {/* Pricing Badge */}
